@@ -7,8 +7,13 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.FrameLayout.LayoutParams;
 import net.sourceforge.zbar.Config;
 import net.sourceforge.zbar.Image;
 import net.sourceforge.zbar.ImageScanner;
@@ -50,7 +55,22 @@ public class ZBarScannerActivity extends Activity implements Camera.PreviewCallb
         // Create a RelativeLayout container that will hold a SurfaceView,
         // and set it as the content of our activity.
         mPreview = new CameraPreview(this, this, autoFocusCB);
-        setContentView(mPreview);
+        
+        FrameLayout layout = new FrameLayout( this );
+        layout.addView( mPreview );
+        
+        ImageView overlay = new ImageView( this );
+        overlay.setImageResource( R.drawable.overlay );
+        layout.addView( overlay );
+
+        ImageView instructions = new ImageView( this );
+        instructions.setImageResource( R.drawable.instructions );
+        LayoutParams layoutParams = new LayoutParams( 256, 1080 );
+        layoutParams.topMargin = 0;
+        layoutParams.leftMargin = 0;
+        layout.addView( instructions, layoutParams );
+        
+        setContentView( layout );
     }
 
     public void setupScanner() {
